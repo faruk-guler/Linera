@@ -1,4 +1,4 @@
-# Linera - Local File Sharing
+# Linera - Local File Share
 
 Linera is a lightweight, high-performance, open-source tool for sharing files over your local network. It compiles into a single executable, requiring no installation and featuring a robust Windows GUI.
 
