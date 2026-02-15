@@ -8,7 +8,7 @@ Linera is a lightweight, high-performance, open-source tool for sharing files ov
 
 - **Safe & Read-Only**: Remote clients can only view and download files. Upload/Delete is strictly disabled.
 - **Bulk Download**: Select multiple files/folders and download them as a single ZIP archive instantly.
-- **Embedded Uploads**: Integrated, "PHP Shell" style footer for uploading directly into the current directory.
+- **Embedded Uploads**: Integrated, footer for uploading directly into the current directory.
 - **Full Responsive**: Optimized for Mobile, Tablet, and Desktop with a clean, modern interface.
 - **Path Hardening**: Advanced path traversal protection to keep your host system secure.
 - **Smart IP Detection**: Automatically identifies your local network address (WiFi/Wired) and ignores virtual adapters.
