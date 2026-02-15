@@ -22,6 +22,8 @@ Linera is a lightweight, high-performance, open-source tool for sharing files ov
 
 ## How to Run
 
+*Ignore the virus warning. Warning about uncertified/unsigned applications.
+
 1. Double-click `Linera.exe`.
 2. The **Linera Server Manager** will open and automatically detect your best network IP.
 3. Click **Browse...** to select the folder you want to share.
