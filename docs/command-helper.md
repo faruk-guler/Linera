@@ -114,7 +114,7 @@ npm install
 ## 6. Project Structure
 
 ```text
-Antigravity/
+Linera/
 ├── app.go              # Backend logic (Go)
 ├── main.go             # Application entry point
 ├── frontend/           # Desktop GUI (Wails)
