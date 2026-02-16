@@ -1,6 +1,6 @@
 # Linera Wails Edition
 
-Formerly Linera It combines a classic Windows GUI with a modern, secure Go backend to provide seamless file transfer capabilities over your local network.
+Linera It combines a classic Windows GUI with a modern, secure Go backend to provide seamless file transfer capabilities over your local network.
 
 ![Linera Main Interface](docs/main.JPG)
 
