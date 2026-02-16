@@ -63,4 +63,4 @@ wails build
 Author: [faruk-guler](https://github.com/faruk-guler)
 [www.farukguler.com](http://www.farukguler.com)
 Version: v7.3
----
+
