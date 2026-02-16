@@ -1,6 +1,6 @@
 # Linera Wails Edition
 
-Formerly Linera is a robust, local file-sharing solution rebuilt on the **Wails v2** framework. It combines a classic Windows GUI with a modern, secure Go backend to provide seamless file transfer capabilities over your local network.
+Formerly Linera It combines a classic Windows GUI with a modern, secure Go backend to provide seamless file transfer capabilities over your local network.
 
 ![Linera Main Interface](docs/main.JPG)
 
