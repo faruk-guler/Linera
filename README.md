@@ -4,10 +4,6 @@ Linera It combines a classic Windows GUI with a modern, secure Go backend to pro
 
 ![Linera Main Interface](docs/main.JPG)
 
-Author: [faruk-guler](https://github.com/faruk-guler)
-[www.farukguler.com](http://www.farukguler.com)
-Version: v7.3
-
 ## Key Features
 
 - **Secure File Sharing**:
@@ -57,4 +53,6 @@ To build from source:
 ```bash
 wails build
 ```
-
+Author: [faruk-guler](https://github.com/faruk-guler)
+[www.farukguler.com](http://www.farukguler.com)
+Version: v7.3
