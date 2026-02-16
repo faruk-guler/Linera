@@ -4,6 +4,7 @@ Formerly Linera is a robust, local file-sharing solution rebuilt on the **Wails 
 
 ![Linera Main Interface](docs/main.JPG)
 
+
 ## Key Features
 
 - **Secure File Sharing**:
