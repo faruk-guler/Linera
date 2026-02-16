@@ -1,0 +1,21 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "Linera",
+  "outputfilename": "Linera",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "faruk-guler",
+    "email": "mail@farukguler.com"
+  },
+  "info": {
+    "productVersion": "7.3.0",
+    "companyName": "faruk-guler",
+    "productName": "Linera",
+    "fileFileVersion": "7.3.0",
+    "copyright": "Copyright \u00A9 2026 faruk-guler",
+    "comments": "Local File Sharing Tool"
+  }
+}

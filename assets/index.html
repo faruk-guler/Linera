@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linera - Local File Sharing</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <h1>Linera</h1>
+                <nav class="breadcrumbs">
+                    {{ range .breadcrumbs }}
+                    {{ if not .IsLast }}
+                    <a href="/?path={{ .Path }}">{{ .Name }}</a> <span class="separator">/</span>
+                    {{ else }}
+                    <span class="current">{{ .Name }}</span>
+                    {{ end }}
+                    {{ end }}
+                </nav>
+            </div>
+            <div class="header-controls">
+                <input type="text" id="search-input" placeholder="Search files..." oninput="filterFiles()"
+                    onkeydown="if(event.key === 'Enter') globalSearch()">
+                <button class="btn-icon" onclick="globalSearch()" title="Search in all folders">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+                <a href="/" class="btn-icon" title="Home">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </a>
+                <button class="btn-icon" onclick="location.reload()" title="Refresh">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                        <path d="M16 16h5v5"></path>
+                    </svg>
+                </button>
+                <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
+                    <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <a href="/logout" class="btn-icon" aria-label="Logout" title="Logout" onclick="confirmLogout(event)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </a>
+            </div>
+        </header>
+
+        <div class="file-list-container">
+            <table class="file-list">
+                <thead>
+                    <tr>
+                        <th style="width: 40px; text-align: center;">
+                            <input type="checkbox" id="select-all" onchange="toggleSelectAll()">
+                        </th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="file-table-body">
+                    {{ if .current_path }}
+                    <tr>
+                        <td></td>
+                        <td>
+                            <a href="/?path={{ .parent_path }}" class="file-link folder-link">
+                                <span class="icon">📁</span> .. (Parent Directory)
+                            </a>
+                        </td>
+                        <td>-</td>
+                        <td></td>
+                    </tr>
+                    {{ end }}
+
+                    {{ range .files }}
+                    <tr class="file-row">
+                        <td style="width: 40px; text-align: center;">
+                            <input type="checkbox" class="file-checkbox" data-path="{{ .Path }}"
+                                onchange="updateBulkActionState()">
+                        </td>
+                        <td>
+                            {{ if .IsDir }}
+                            <div class="file-name">
+                                <a href="/?path={{ .Path }}" class="file-link folder-link">
+                                    <span class="icon">📁</span> {{ .Name }}
+                                </a>
+                            </div>
+                            {{ else }}
+                            <a href="#" class="file-name file-link"
+                                onclick="previewFile('{{ .Path }}', '{{ .Name }}'); return false;">
+                                <span class="icon">📄</span> {{ .Name }}
+                            </a>
+                            {{ end }}
+                        </td>
+                        <td>{{ .Size }}</td>
+                        <td>
+                            <a href="/download/{{ .Path }}" class="btn-download" download>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                {{ if .IsDir }}Download ZIP{{ else }}Download{{ end }}
+                            </a>
+                        </td>
+                    </tr>
+                    {{ end }}
+
+                    {{ if and (not .files) (not .current_path) }}
+                    <tr>
+                        <td colspan="2" style="text-align: center; color: var(--text-secondary);">No files shared yet.
+                        </td>
+                    </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Global Search Results -->
+        <div id="search-results-container" class="search-results" style="display: none;">
+            <div class="search-results-header">
+                <h3 id="search-results-title">Search Results</h3>
+                <button onclick="exitSearch()" class="btn-secondary">← Back to Folder</button>
+            </div>
+            <div id="search-results-body"></div>
+        </div>
+
+        <!-- Integrated Upload Section (PHP Shell Style) -->
+        <div id="upload-section" class="upload-inset" data-path="{{ .current_path }}">
+            <div id="upload-status"
+                style="display: none; padding: 8px; border-radius: 6px; margin-bottom: 12px; font-size: 0.85rem;"></div>
+
+            <div class="upload-row">
+                <span class="upload-hint" title="Upload to current directory">📤</span>
+                <input type="password" id="upload-pin" placeholder="PIN" style="width: 110px;">
+                <input type="file" id="upload-file" style="flex: 1;">
+                <button class="btn-primary" id="btn-do-upload" style="padding: 0 20px; height: 38px;">Upload</button>
+            </div>
+
+            <div id="progress-container" style="display: none; margin-top: 10px;">
+                <div style="height: 4px; background: var(--border-color); border-radius: 2px; overflow: hidden;">
+                    <div id="progress-bar"
+                        style="width: 0%; height: 100%; background: var(--primary-color); transition: width 0.1s;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer
+            style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 0.9rem; color: var(--text-secondary);">
+            <p>Author: <a href="https://github.com/faruk-guler" target="_blank"
+                    style="color: var(--primary-color); text-decoration: none;">faruk-guler</a> | {{ .Version }}</p>
+            <p><a href="http://www.farukguler.com" target="_blank"
+                    style="color: var(--text-secondary); text-decoration: none;">www.farukguler.com</a></p>
+        </footer>
+    </div>
+
+    <!-- Bulk Action Bar -->
+    <div id="bulk-action-bar" class="bulk-bar">
+        <div class="bulk-content">
+            <span id="bulk-count">0 items selected</span>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-primary" onclick="downloadSelected()" style="padding: 8px 16px; font-size: 0.85rem;">
+                    Download Selected (ZIP)
+                </button>
+                <button class="btn-secondary" onclick="clearSelection()" style="padding: 8px 16px; font-size: 0.85rem;">
+                    Clear
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <div class="preview-header">
+                <h3 id="preview-title">Preview</h3>
+                <button class="preview-close" onclick="closePreview()">&times;</button>
+            </div>
+            <div id="preview-body" class="preview-body">
+                <!-- Content injected here -->
+            </div>
+            <div class="preview-footer">
+                <a id="preview-download-btn" href="#" class="btn-primary" download>⬇ Download</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Linera Server Manager v7.3</title>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <header>
+            <div class="status-label">
+                <div class="status-dot stopped" id="status-dot"></div>
+                Server Status: <span id="status-text">STOPPED</span>
+            </div>
+            <button onclick="showAbout()" title="About">About</button>
+        </header>
+
+        <button class="main-action" id="start-btn" onclick="toggleServer()">Start Server</button>
+
+        <div class="section">
+            <h3>Server Configuration:</h3>
+            <div class="row">
+                Port: <input type="number" id="port" value="5000" style="width: 60px;">
+                <div style="flex: 1;"></div>
+                Security PIN (<button class="link-btn" onclick="renewSessionPin()">New</button>):
+                <input type="text" id="session-pin" readonly style="width: 120px; font-weight: bold; font-size: 11pt;">
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Shared Folder:</h3>
+            <div class="row">
+                <input type="text" id="shared-folder" readonly style="flex: 1;" placeholder="No folder selected">
+                <button onclick="selectFolder()">Browse...</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Upload (Inbox) Settings:</h3>
+            <div class="row">
+                <label style="display: flex; align-items: center; gap: 5px;">
+                    <input type="checkbox" id="upload-enabled" onchange="updateUploads()"> Enable Remote Uploads
+                </label>
+                <div style="flex: 1;"></div>
+                Upload PIN (<button class="link-btn" onclick="renewUploadPin()">New</button>):
+                <input type="text" id="upload-pin" readonly style="width: 80px; font-weight: bold;">
+            </div>
+        </div>
+
+        <div id="info-section" style="display: none; flex-direction: column; gap: 12px;">
+            <div class="section">
+                <p>Local Address:</p>
+                <div class="row">
+                    <div class="link-box" id="local-link">http://localhost:5000</div>
+                    <button onclick="OpenInBrowser()">Open</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <p>Network Address:</p>
+                <div class="row">
+                    <div class="link-box" id="network-link">http://0.0.0.0:5000</div>
+                    <button onclick="copyNetworkLink()">Copy</button>
+                    <button onclick="showQR()">📱 QR</button>
+                </div>
+            </div>
+        </div>
+
+
+        <footer style="margin-top: 10px; text-align: center; color: #666; font-size: 8pt;">
+            Linera v7.3
+        </footer>
+    </div>
+
+    <!-- Classic QR Modal -->
+    <div id="qr-modal" class="modal">
+        <div class="modal-content" style="width: 300px; text-align: center;">
+            <span class="close-x" onclick="hideModal('qr-modal')">&times;</span>
+            <h3 style="margin-bottom: 10px;">Scan to Connect</h3>
+            <div id="qr-container"
+                style="margin: 10px auto; background: white; padding: 5px; border: 1px solid #ccc; display: inline-block;">
+                <img id="qr-image" src="" alt="QR Code" style="width: 200px;">
+            </div>
+            <p id="qr-link" style="font-family: monospace; font-size: 8pt; word-break: break-all; margin: 10px 0;"></p>
+            <button onclick="hideModal('qr-modal')">Close</button>
+        </div>
+    </div>
+
+    <!-- Classic About Modal -->
+    <div id="about-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-x" onclick="hideModal('about-modal')">&times;</span>
+            <div class="about-header">
+                <div class="info-icon">i</div>
+                <div>
+                    <h3 style="margin:0" id="about-title">About Linera</h3>
+                    <p id="about-version" style="font-weight: bold;"></p>
+                </div>
+            </div>
+            <div style="font-size: 9pt; line-height: 1.4; margin-left: 55px;">
+                <p>Author: <span id="about-author"></span></p>
+                <p>Website: <span id="about-website"></span></p>
+            </div>
+            <div style="text-align: right; margin-top: 20px;">
+                <button onclick="hideModal('about-modal')" style="width: 100px;">Okay</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./src/main.js" type="module"></script>
+</body>
+
+</html>
